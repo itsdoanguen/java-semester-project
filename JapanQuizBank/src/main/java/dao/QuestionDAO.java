@@ -78,4 +78,27 @@ public class QuestionDAO {
         }
         return false;
     }
+
+    public Question getQuestionById(int id) {
+        try {
+            java.sql.Connection conn = DBConnection.getConnection();
+            String sql = "SELECT * FROM Question WHERE id = ?";
+            java.sql.PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, id);
+            java.sql.ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Question q = new Question();
+                q.setId(rs.getInt("id"));
+                q.setContent(rs.getString("content"));
+                q.setType(rs.getString("type"));
+                q.setCreatedAt(rs.getTimestamp("created_at"));
+                q.setHasAudio(rs.getBoolean("has_audio"));
+                q.setAudioPath(rs.getString("audio_path"));
+                return q;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }

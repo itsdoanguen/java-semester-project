@@ -60,8 +60,22 @@ public class ExamPaperManagerDialog extends JDialog {
         questionTableModel = new QuestionTableModel();
         questionTable = new JTable(questionTableModel);
         questionTable.setRowHeight(28);
-        questionTable.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        questionTable.setFont(new Font("MS Mincho", Font.PLAIN, 17));
         questionTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 15));
+        // Set cell renderer cho cột 'Nội dung' để luôn dùng font MS Mincho
+        javax.swing.table.TableColumnModel columnModel = questionTable.getColumnModel();
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            if ("Nội dung".equals(columnModel.getColumn(i).getHeaderValue())) {
+                columnModel.getColumn(i).setCellRenderer(new javax.swing.table.DefaultTableCellRenderer() {
+                    @Override
+                    public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                        java.awt.Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                        c.setFont(new Font("MS Mincho", Font.PLAIN, 17));
+                        return c;
+                    }
+                });
+            }
+        }
         JScrollPane tableScroll = new JScrollPane(questionTable);
         detailPanel.add(tableScroll, BorderLayout.CENTER);
 

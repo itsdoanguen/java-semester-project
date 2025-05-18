@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class ExamPaperManagerFrame extends JFrame {
     private DefaultListModel<Question> normalQuestionListModel;
@@ -143,10 +145,22 @@ public class ExamPaperManagerFrame extends JFrame {
 
         // Button actions (chỉ 1 cặp nút)
         btnAdd.addActionListener(e -> {
-            Question q = normalList.getSelectedValue();
-            if (q != null && !selectedNormalModel.contains(q)) selectedNormalModel.addElement(q);
-            q = listeningList.getSelectedValue();
-            if (q != null && !selectedListeningModel.contains(q)) selectedListeningModel.addElement(q);
+            // Chỉ thêm 1 câu hỏi mỗi lần, ưu tiên list đang focus
+            if (normalList.isFocusOwner()) {
+                Question q = normalList.getSelectedValue();
+                if (q != null && !selectedNormalModel.contains(q)) selectedNormalModel.addElement(q);
+            } else if (listeningList.isFocusOwner()) {
+                Question q = listeningList.getSelectedValue();
+                if (q != null && !selectedListeningModel.contains(q)) selectedListeningModel.addElement(q);
+            } else {
+                // Nếu không focus, thử lấy selected value của cả hai (chỉ lấy 1)
+                Question q = normalList.getSelectedValue();
+                if (q != null && !selectedNormalModel.contains(q)) selectedNormalModel.addElement(q);
+                else {
+                    q = listeningList.getSelectedValue();
+                    if (q != null && !selectedListeningModel.contains(q)) selectedListeningModel.addElement(q);
+                }
+            }
         });
         btnRemove.addActionListener(e -> {
             Question q = selectedNormalList.getSelectedValue();
@@ -404,7 +418,7 @@ public class ExamPaperManagerFrame extends JFrame {
         sb.append("<html><body style='font-family:Segoe UI, Arial, sans-serif;font-size:14px;background:#f8fafd;margin:0;padding:0;'>");
         sb.append("<div style='border:1.5px solid #2196F3;border-radius:10px;padding:14px 16px 10px 16px;background:#fff;max-width:600px;margin:10px auto;'>");
         sb.append("<div style='font-size:13px;color:#888;margin-bottom:5px;'><b>ID:</b> ").append(q.getId()).append("</div>");
-        sb.append("<div style='font-size:15px;font-weight:bold;color:#1a237e;margin-bottom:8px;'>").append(q.getContent()).append("</div>");
+        sb.append("<div style='font-size:15px;font-weight:bold;color:#1a237e;margin-bottom:8px;font-family:MS Mincho, Segoe UI, Arial;font-size:18px;'>").append(q.getContent()).append("</div>");
         String typeLabel;
         switch (q.getType()) {
             case "nghe": typeLabel = "Bài nghe (Listening)"; break;
@@ -428,7 +442,7 @@ public class ExamPaperManagerFrame extends JFrame {
         java.util.List<model.Answer> answers = new dao.AnswerDAO().getAnswersByQuestionId(q.getId());
         if (!answers.isEmpty()) {
             sb.append("<div style='margin-top:8px;margin-bottom:2px;'><b>Đáp án:</b></div>");
-            sb.append("<ul style='margin:0 0 0 16px;padding:0;list-style-type:circle;'>");
+            sb.append("<ul style='margin:0 0 0 16px;padding:0;list-style-type:circle;font-family:MS Mincho, Segoe UI, Arial;font-size:16px;'>");
             for (model.Answer ans : answers) {
                 sb.append("<li style='margin-bottom:4px;");
                 if (ans.isCorrect()) sb.append("background:#e3f2fd;border-radius:6px;padding:2px 6px 2px 6px;color:#1976d2;font-weight:bold;list-style-type:square;border:1.5px solid #2196F3;");
@@ -534,5 +548,26 @@ public class ExamPaperManagerFrame extends JFrame {
         javax.swing.UIManager.put("TitledBorder.font", new Font("Segoe UI", Font.BOLD, 16));
         javax.swing.UIManager.put("OptionPane.messageFont", new Font("Segoe UI", Font.PLAIN, 16));
         javax.swing.UIManager.put("OptionPane.buttonFont", new Font("Segoe UI", Font.PLAIN, 16));
+    }
+
+    private void setTableContentFont(JTable table) {
+        TableColumnModel columnModel = table.getColumnModel();
+        int contentCol = -1;
+        for (int i = 0; i < columnModel.getColumnCount(); i++) {
+            if ("Nội dung".equals(columnModel.getColumn(i).getHeaderValue())) {
+                contentCol = i;
+                break;
+            }
+        }
+        if (contentCol >= 0) {
+            columnModel.getColumn(contentCol).setCellRenderer(new DefaultTableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    c.setFont(new Font("MS Mincho", Font.PLAIN, 18));
+                    return c;
+                }
+            });
+        }
     }
 }

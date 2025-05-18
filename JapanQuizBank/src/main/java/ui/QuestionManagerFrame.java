@@ -24,7 +24,7 @@ public class QuestionManagerFrame extends JFrame {
 
         tableModel = new QuestionTableModel();
         table = new JTable(tableModel);
-        table.setFont(new Font("MS Mincho", Font.PLAIN, 18)); // Đổi sang font hỗ trợ tiếng Nhật
+        table.setFont(new Font("MS Mincho", Font.PLAIN, 18)); 
         table.setRowHeight(28);
         table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 16));
         table.getTableHeader().setBackground(new Color(220, 230, 250));
@@ -58,7 +58,6 @@ public class QuestionManagerFrame extends JFrame {
         btnRefresh.addActionListener(e -> refreshTable());
         refreshTable();
 
-        // Double click để mở quản lý đáp án
         table.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
@@ -107,10 +106,21 @@ public class QuestionManagerFrame extends JFrame {
     }
 
     private void showAnswerManager(int questionId) {
+        // Lấy nội dung câu hỏi để hiển thị
+        model.Question question = new dao.QuestionDAO().getQuestionById(questionId);
         JDialog dialog = new JDialog(this, "Quản lý đáp án", true);
         dialog.setSize(500, 350);
         dialog.setLocationRelativeTo(this);
         dialog.setLayout(new BorderLayout());
+
+        // Thêm label hiển thị nội dung câu hỏi với font tiếng Nhật
+        if (question != null) {
+            JLabel lblQuestion = new JLabel("Câu hỏi: " + question.getContent());
+            lblQuestion.setFont(new Font("MS Mincho", Font.PLAIN, 18));
+            lblQuestion.setForeground(new Color(33, 56, 117));
+            lblQuestion.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
+            dialog.add(lblQuestion, BorderLayout.NORTH);
+        }
 
         AnswerTableModel answerTableModel = new AnswerTableModel();
         JTable answerTable = new JTable(answerTableModel);
