@@ -243,7 +243,7 @@ public class ExamPaperManagerFrame extends JFrame {
         txtOcrTextGpt4o.setWrapStyleWord(true);
         txtOcrTextGpt4o.setBorder(BorderFactory.createTitledBorder("Kết quả JSON từ AI model"));
         JScrollPane ocrScrollGpt4o = new JScrollPane(txtOcrTextGpt4o);
-        ocrScrollGpt4o.setPreferredSize(new Dimension(500, 100));
+        ocrScrollGpt4o.setPreferredSize(new Dimension(500, 60)); // Giảm chiều cao
         // Thêm list preview câu hỏi
         DefaultListModel<Question> importQuestionListModel = new DefaultListModel<>();
         JList<Question> importQuestionList = new JList<>(importQuestionListModel);
@@ -258,33 +258,8 @@ public class ExamPaperManagerFrame extends JFrame {
             Question q = importQuestionList.getSelectedValue();
             if (q != null) importPreviewPane.setText(renderQuestionDetailWithAnswersImport(q, importAnswersMap));
         });
-        // Nút thao tác
-        JButton btnEditQ = new JButton("Chỉnh sửa");
-        JButton btnDeleteQ = new JButton("Xóa");
-        JButton btnAddQ = new JButton("Thêm câu hỏi mới");
+        // Chỉ giữ lại nút Lưu bộ đề
         JButton btnSaveExam = new JButton("Lưu bộ đề");
-        btnEditQ.addActionListener(e -> {
-            Question q = importQuestionList.getSelectedValue();
-            if (q != null) {
-                new QuestionFormDialog(this, q).setVisible(true);
-                importQuestionList.repaint();
-            }
-        });
-        btnDeleteQ.addActionListener(e -> {
-            Question q = importQuestionList.getSelectedValue();
-            if (q != null) importQuestionListModel.removeElement(q);
-        });
-        btnAddQ.addActionListener(e -> {
-            Question newQ = new Question();
-            newQ.setContent("");
-            newQ.setType("tuvung");
-            newQ.setCreatedAt(new java.util.Date());
-            newQ.setHasAudio(false);
-            new QuestionFormDialog(this, newQ).setVisible(true);
-            if (newQ.getContent() != null && !newQ.getContent().trim().isEmpty()) {
-                importQuestionListModel.addElement(newQ);
-            }
-        });
         btnSaveExam.addActionListener(e -> {
             if (importQuestionListModel.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Không có câu hỏi nào để lưu!");
@@ -333,7 +308,7 @@ public class ExamPaperManagerFrame extends JFrame {
         qPanel.add(new JScrollPane(importQuestionList), BorderLayout.WEST);
         qPanel.add(new JScrollPane(importPreviewPane), BorderLayout.CENTER);
         JPanel btnPanelImport = new JPanel();
-        btnPanelImport.add(btnEditQ); btnPanelImport.add(btnDeleteQ); btnPanelImport.add(btnAddQ); btnPanelImport.add(btnSaveExam);
+        btnPanelImport.add(btnSaveExam);
         qPanel.add(btnPanelImport, BorderLayout.SOUTH);
         importPanel.add(qPanel, BorderLayout.SOUTH);
         // Chọn file ảnh
@@ -487,7 +462,7 @@ public class ExamPaperManagerFrame extends JFrame {
         java.util.List<model.Answer> answers = importAnswersMap.getOrDefault(q, new java.util.ArrayList<>());
         if (!answers.isEmpty()) {
             sb.append("<div style='margin-top:8px;margin-bottom:2px;'><b>Đáp án:</b></div>");
-            sb.append("<ul style='margin:0 0 0 16px;padding:0;list-style-type:circle;'>");
+            sb.append("<ul style='margin:0 0 0 16px;padding:0;list-style-type:circle;font-family:MS Mincho, Segoe UI, Arial;font-size:16px;'>");
             for (model.Answer ans : answers) {
                 sb.append("<li style='margin-bottom:4px;");
                 if (ans.isCorrect()) sb.append("background:#e3f2fd;border-radius:6px;padding:2px 6px 2px 6px;color:#1976d2;font-weight:bold;list-style-type:square;border:1.5px solid #2196F3;");
