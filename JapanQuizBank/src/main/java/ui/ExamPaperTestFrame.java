@@ -25,6 +25,7 @@ public class ExamPaperTestFrame extends JFrame {
         JTable table = new JTable(data, columns);
         add(new JScrollPane(table), BorderLayout.CENTER);
     }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new ExamPaperTestFrame().setVisible(true));
     }

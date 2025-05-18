@@ -10,9 +10,8 @@ public class LocalOcrUtil {
      * @return Chuỗi JSON trả về từ exe
      */
     public static String extractQuestionsFromImageByExe(String imagePath) throws Exception {
-        // Đường dẫn tới file exe (có thể cần full path nếu không cùng thư mục)
+        // Gọi exe AI model, truyền path ảnh, nhận kết quả JSON
         String exePath = "src/main/java/ai_model/chat_with_image_file.exe";
-        // Đảm bảo truyền absolute path cho file ảnh
         java.io.File imgFile = new java.io.File(imagePath);
         String absImagePath = imgFile.getAbsolutePath();
         System.out.println("[LocalOcrUtil] Đường dẫn exe: " + new java.io.File(exePath).getAbsolutePath());
@@ -35,6 +34,6 @@ public class LocalOcrUtil {
             System.err.println("[LocalOcrUtil] Output (stdout+stderr):\n" + output);
             throw new RuntimeException("OCR exe failed with exit code " + exitCode + ". Output: " + output);
         }
-        return output.toString().trim(); // JSON string
+        return output.toString().trim();
     }
 }

@@ -10,15 +10,18 @@ public class QuestionTableModel extends AbstractTableModel {
     private String[] columns = {"ID", "Nội dung", "Loại", "Audio", "Ngày tạo", "Có audio"};
     private List<Question> data = new ArrayList<>();
 
+    // Load data from the database
     public void loadData() {
         data = new QuestionDAO().getAllQuestions();
         fireTableDataChanged();
     }
 
+    // Get question at a specific row
     public Question getQuestionAt(int row) {
         return data.get(row);
     }
 
+    // Set data for the table
     public void setData(List<Question> data) {
         this.data = data;
         fireTableDataChanged();

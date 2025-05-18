@@ -10,11 +10,13 @@ public class AnswerTableModel extends AbstractTableModel {
     private String[] columns = {"ID", "Nội dung đáp án", "Đúng?"};
     private List<Answer> data = new ArrayList<>();
 
+    // Load data from database
     public void loadData(int questionId) {
         data = new AnswerDAO().getAnswersByQuestionId(questionId);
         fireTableDataChanged();
     }
 
+    // Get answer at specific row
     public Answer getAnswerAt(int row) {
         return data.get(row);
     }

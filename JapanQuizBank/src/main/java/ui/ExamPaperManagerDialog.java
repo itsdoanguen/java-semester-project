@@ -62,7 +62,6 @@ public class ExamPaperManagerDialog extends JDialog {
         questionTable.setRowHeight(28);
         questionTable.setFont(new Font("MS Mincho", Font.PLAIN, 17));
         questionTable.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 15));
-        // Set cell renderer cho cột 'Nội dung' để luôn dùng font MS Mincho
         javax.swing.table.TableColumnModel columnModel = questionTable.getColumnModel();
         for (int i = 0; i < columnModel.getColumnCount(); i++) {
             if ("Nội dung".equals(columnModel.getColumn(i).getHeaderValue())) {
