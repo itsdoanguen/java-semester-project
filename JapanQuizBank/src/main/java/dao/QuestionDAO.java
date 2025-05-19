@@ -82,23 +82,34 @@ public class QuestionDAO {
     public Question getQuestionById(int id) {
         try {
             java.sql.Connection conn = DBConnection.getConnection();
-            String sql = "SELECT * FROM Question WHERE id = ?";
+            String sql = "SELECT * FROM Questions WHERE Id = ?";
             java.sql.PreparedStatement ps = conn.prepareStatement(sql);
             ps.setInt(1, id);
             java.sql.ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 Question q = new Question();
-                q.setId(rs.getInt("id"));
-                q.setContent(rs.getString("content"));
-                q.setType(rs.getString("type"));
-                q.setCreatedAt(rs.getTimestamp("created_at"));
-                q.setHasAudio(rs.getBoolean("has_audio"));
-                q.setAudioPath(rs.getString("audio_path"));
+                q.setId(rs.getInt("Id"));
+                q.setContent(rs.getString("Content"));
+                q.setType(rs.getString("Type"));
+                q.setCreatedAt(rs.getTimestamp("CreatedAt"));
+                q.setHasAudio(rs.getBoolean("HasAudio"));
+                q.setAudioPath(rs.getString("AudioPath"));
                 return q;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public List<Question> getQuestionsByExamPaperId(int examPaperId) {
+        List<Question> list = new ArrayList<>();
+        ExamPaperQuestionDAO epqDao = new ExamPaperQuestionDAO();
+        List<model.ExamPaperQuestion> epqList = epqDao.getQuestionsByExamPaperId(examPaperId);
+        for (model.ExamPaperQuestion epq : epqList) {
+            Question q = getQuestionById(epq.getQuestionId());
+            if (q != null) list.add(q);
+        }
+        return list;
     }
 }

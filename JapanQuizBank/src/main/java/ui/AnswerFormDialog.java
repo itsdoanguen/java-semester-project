@@ -15,10 +15,10 @@ public class AnswerFormDialog extends JDialog {
     private int questionId;
 
     static {
-        javax.swing.UIManager.put("Label.font", new Font("Segoe UI", Font.PLAIN, 16));
-        javax.swing.UIManager.put("Button.font", new Font("Segoe UI", Font.PLAIN, 16));
-        javax.swing.UIManager.put("TextField.font", new Font("Segoe UI", Font.PLAIN, 16));
-        javax.swing.UIManager.put("CheckBox.font", new Font("Segoe UI", Font.PLAIN, 16));
+        javax.swing.UIManager.put("Label.font", new Font("MS Mincho", Font.PLAIN, 16));
+        javax.swing.UIManager.put("Button.font", new Font("MS Mincho", Font.PLAIN, 16));
+        javax.swing.UIManager.put("TextField.font", new Font("MS Mincho", Font.PLAIN, 16));
+        javax.swing.UIManager.put("CheckBox.font", new Font("MS Mincho", Font.PLAIN, 16));
     }
 
     public AnswerFormDialog(JFrame parent, Answer a, int questionId) {
@@ -35,14 +35,14 @@ public class AnswerFormDialog extends JDialog {
         lblAnswer.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         add(lblAnswer);
         txtAnswerText = new JTextField(a != null ? a.getAnswerText() : "");
-        txtAnswerText.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        txtAnswerText.setFont(new Font("MS Mincho", Font.PLAIN, 16));
         add(txtAnswerText);
 
         JLabel lblCorrect = new JLabel("Là đáp án đúng?");
         lblCorrect.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         add(lblCorrect);
         chkCorrect = new JCheckBox();
-        chkCorrect.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        chkCorrect.setFont(new Font("MS Mincho", Font.PLAIN, 16));
         chkCorrect.setSelected(a != null && a.isCorrect());
         add(chkCorrect);
 

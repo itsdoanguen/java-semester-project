@@ -59,6 +59,9 @@ public class MainFrame extends JFrame {
         btnManageExamPapers.addActionListener(e -> {
             new ExamPaperManagerDialog(this).setVisible(true);
         });
+        btnExport.addActionListener(e -> {
+            new ExportExamDialog(this).setVisible(true);
+        });
     }
 
     public static void main(String[] args) {
